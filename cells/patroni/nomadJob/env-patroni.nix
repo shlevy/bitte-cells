@@ -67,6 +67,13 @@ in {
         consul:
           url: http://127.0.0.1:8500
           register_service: true
+          service_tags:
+            - ingress
+            - traefik.enable=true
+            - traefik.tcp.routers.${namespace}-database.entrypoints=psql
+            - traefik.tcp.routers.${namespace}-database.rule=HostSNI(`*`)
+            - traefik.tcp.routers.${namespace}-database.service=${namespace}-database
+            - traefik.tcp.routers.${namespace}-database.tls.passthrough=true
 
         bootstrap:
           dcs:
